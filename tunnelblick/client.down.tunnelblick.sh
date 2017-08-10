@@ -154,19 +154,25 @@ EOF
 			    logMessage "Resetting primary interface '${PINTERFACE}' via networksetup -setairportpower off/on..."
 				/usr/sbin/networksetup -setairportpower off
 				sleep 2
+				route -n flush
+				sleep 2
 				/usr/sbin/networksetup -setairportpower on
 			else
 				logMessage "Resetting primary interface '${PINTERFACE}' via networksetup -setairportpower ${PINTERFACE} off/on..."
 				/usr/sbin/networksetup -setairportpower "${PINTERFACE}" off
 				sleep 2
+				route -n flush
+				sleep 2
 				/usr/sbin/networksetup -setairportpower "${PINTERFACE}" on
 			fi
 		else
 		    if [ -f /sbin/ifconfig ] ; then
-			    logMessage "Resetting primary interface '${PINTERFACE}' via ifconfig ${PINTERFACE} down/up..."
-                /sbin/ifconfig "${PINTERFACE}" down
-                sleep 2
-			    /sbin/ifconfig "${PINTERFACE}" up
+			  	logMessage "Resetting primary interface '${PINTERFACE}' via ifconfig ${PINTERFACE} down/up..."
+                		/sbin/ifconfig "${PINTERFACE}" down
+                		sleep 2
+				route -n flush
+				sleep 2
+			    	/sbin/ifconfig "${PINTERFACE}" up
 			else
 				logMessage "WARNING: Not resetting primary interface because /sbin/ifconfig does not exist."
 			fi
